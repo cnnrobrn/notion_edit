@@ -108,6 +108,70 @@ program
   });
 
 program
+  .command('convert-checkboxes')
+  .description('Convert all checkboxes (to-do items) to bullet points')
+  .option('-d, --dry-run', 'Preview changes without making them')
+  .option('-y, --yes', 'Skip confirmation prompt')
+  .action(async (options) => {
+    try {
+      const { convertCheckboxesToBullets } = await import('./convert-checkboxes-to-bullets.js');
+      
+      if (!options.yes && !options.dryRun) {
+        console.log(chalk.yellow('\n⚠️  WARNING: This will convert ALL checkboxes to bullet points across your entire workspace!'));
+        console.log(chalk.yellow('This action cannot be easily undone.\n'));
+        
+        const confirm = await prompt(chalk.yellow('Do you want to continue? (yes/no): '));
+        if (confirm.toLowerCase() !== 'yes' && confirm.toLowerCase() !== 'y') {
+          console.log(chalk.gray('Operation cancelled'));
+          rl.close();
+          process.exit(0);
+        }
+      }
+      
+      const notion = createNotionClient();
+      await convertCheckboxesToBullets(notion, options.dryRun);
+      
+      rl.close();
+    } catch (error) {
+      console.error(chalk.red(`\n❌ Error: ${error.message}`));
+      rl.close();
+      process.exit(1);
+    }
+  });
+
+program
+  .command('convert-quotes')
+  .description('Convert all quote blocks to quoted text')
+  .option('-d, --dry-run', 'Preview changes without making them')
+  .option('-y, --yes', 'Skip confirmation prompt')
+  .action(async (options) => {
+    try {
+      const { convertQuotesToText } = await import('./convert-quotes-to-text.js');
+      
+      if (!options.yes && !options.dryRun) {
+        console.log(chalk.yellow('\n⚠️  WARNING: This will convert ALL quote blocks to quoted paragraphs across your entire workspace!'));
+        console.log(chalk.yellow('This action cannot be easily undone.\n'));
+        
+        const confirm = await prompt(chalk.yellow('Do you want to continue? (yes/no): '));
+        if (confirm.toLowerCase() !== 'yes' && confirm.toLowerCase() !== 'y') {
+          console.log(chalk.gray('Operation cancelled'));
+          rl.close();
+          process.exit(0);
+        }
+      }
+      
+      const notion = createNotionClient();
+      await convertQuotesToText(notion, options.dryRun);
+      
+      rl.close();
+    } catch (error) {
+      console.error(chalk.red(`\n❌ Error: ${error.message}`));
+      rl.close();
+      process.exit(1);
+    }
+  });
+
+program
   .command('dry-run')
   .description('Preview what would be replaced without making changes')
   .option('-s, --search <text>', 'Text to search for')
