@@ -7,9 +7,27 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "tts": "node convert-content-to-tts.js"
+    "find-replace": "node index.js",
+    "check-h1": "node check-h1-tags.js",
+    "check-h1-optimized": "node check-h1-tags-optimized.js",
+    "count-pages": "node count-database-pages.js",
+    "convert-checkboxes": "node convert-checkboxes-to-bullets.js",
+    "convert-quotes": "node convert-quotes-to-text.js",
+    "test-quotes": "node test-quote-converter.js",
+    "copy-content": "node copy-content-to-blogs.js",
+    "cleanup-content64": "node cleanup-content64-fields.js",
+    "tts": "node convert-content-to-tts.js",
+    "tts:cloudflare": "node tts-cloudflare-workflow.js",
+    "tts:test": "node tts-cloudflare-workflow.js test",
+    "notebooklm": "node notebooklm-workflow.js",
+    "notebooklm:pull": "node notebooklm-workflow.js pull",
+    "notebooklm:sync": "node notebooklm-workflow.js sync",
+    "notebooklm:helper": "node notebooklm-media-helper.js",
+    "notebooklm:prepare": "node prepare-notebooklm-content.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.890.0",
+    "@aws-sdk/lib-storage": "^3.890.0",
     "@notionhq/client": "^2.2.15",
     "chalk": "^5.3.0",
     "commander": "^12.0.0",
